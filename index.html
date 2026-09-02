@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蔡亚轩 · AI训练师 / 智能体开发 / PPT优化专员</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --accent: #0d9488;
+            --accent-light: #14b8a6;
+            --bg: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 40%, #0d9488 100%);
+            --gradient-hero: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0d9488 100%);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            --font-mono: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-light: #a5b4fc;
+            --primary-dark: #6366f1;
+            --accent: #2dd4bf;
+            --accent-light: #5eead4;
+            --bg: #0b1120;
+            --bg-secondary: #111827;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.4);
+            --gradient: linear-gradient(135deg, #818cf8 0%, #a78bfa 40%, #2dd4bf 100%);
+            --gradient-hero: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #2dd4bf 100%);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background-color var(--transition), color var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background-color var(--transition), border-color var(--transition), box-shadow var(--transition);
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+        .navbar-inner {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .navbar-brand {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity var(--transition);
+        }
+        .navbar-brand:hover {
+            opacity: 0.8;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .navbar-links::-webkit-scrollbar {
+            display: none;
+        }
+        .navbar-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            transition: color var(--transition), background-color var(--transition);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .navbar-links a:hover,
+        .navbar-links a:focus-visible {
+            color: var(--primary);
+            background-color: var(--bg-secondary);
+            outline: none;
+        }
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            padding: 0;
+        }
+        .icon-btn:hover,
+        .icon-btn:focus-visible {
+            background-color: var(--bg-secondary);
+            color: var(--primary);
+            border-color: var(--primary-light);
+            outline: none;
+        }
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 900;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(16px);
+            transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.4);
+            transform: translateY(-2px);
+        }
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 48px 20px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: var(--gradient-hero);
+            opacity: 0.08;
+            filter: blur(80px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            user-select: none;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .hero-name {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        .hero-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            letter-spacing: 0.01em;
+        }
+        .hero-desc {
+            max-width: 620px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            cursor: default;
+            white-space: nowrap;
+        }
+        .badge.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .badge.accent {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: #fff;
+            box-shadow: var(--shadow-md);
+        }
+        .btn-primary:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            background-color: var(--bg-secondary);
+        }
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .section {
+            margin-top: 48px;
+            animation: fadeInUp 0.3s ease-out both;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .section-line {
+            flex: 1;
+            height: 1.5px;
+            background: var(--border);
+            border-radius: 999px;
+        }
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .highlight-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: default;
+        }
+        .highlight-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+        .highlight-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .highlight-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .highlight-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .tabs-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .tabs-nav {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 8px;
+            background: var(--bg-secondary);
+        }
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 12px 18px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            border-bottom: 2.5px solid transparent;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            position: relative;
+            font-family: var(--font-sans);
+        }
+        .tab-btn:hover {
+            color: var(--text);
+            background-color: var(--card-bg);
+        }
+        .tab-btn:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab-btn[aria-selected="true"] {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab-panel {
+            display: none;
+            padding: 24px;
+            animation: fadeInUp 0.2s ease-out both;
+        }
+        .tab-panel[aria-hidden="false"] {
+            display: block;
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .skill-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            transition: background-color var(--transition);
+        }
+        .skill-list li:hover {
+            background-color: var(--bg-secondary);
+        }
+        .skill-list li::before {
+            content: "◆";
+            font-size: 0.55rem;
+            color: var(--primary);
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .skill-list li strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .skill-tag {
+            display: inline-block;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin: 0 2px;
+            border: 1px solid var(--border);
+        }
+        .skill-tag.highlight {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border-color: rgba(79, 70, 229, 0.25);
+        }
+        [data-theme="dark"] .skill-tag.highlight {
+            background: rgba(129, 140, 248, 0.15);
+            color: var(--primary-light);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: var(--border);
+            border-radius: 999px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+            padding-left: 8px;
+        }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gradient);
+            box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--border);
+        }
+        .timeline-date {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .timeline-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .timeline-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .cert-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            transition: all var(--transition);
+            cursor: default;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .cert-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-2px);
+        }
+        .cert-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(79, 70, 229, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        [data-theme="dark"] .cert-icon {
+            background: rgba(129, 140, 248, 0.15);
+        }
+        .cert-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .cert-info h4 {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+            line-height: 1.35;
+        }
+        .cert-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+        .gallery-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+            background: var(--bg-secondary);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        .gallery-caption {
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .advantages-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            list-style: none;
+        }
+        .advantage-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: all var(--transition);
+            cursor: default;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .advantage-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+        .advantage-item::before {
+            content: "★";
+            color: var(--accent);
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .footer {
+            margin-top: 56px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .footer span {
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-inner {
+                padding: 0 14px;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .navbar-links a {
+                font-size: 0.75rem;
+                padding: 5px 8px;
+            }
+            .main-container {
+                padding: 68px 14px 36px;
+            }
+            .hero {
+                padding: 32px 12px 28px;
+            }
+            .hero-avatar {
+                width: 72px;
+                height: 72px;
+                font-size: 1.8rem;
+            }
+            .section {
+                margin-top: 36px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 0.75rem;
+            }
+            .tab-panel {
+                padding: 16px 14px;
+            }
+            .highlights-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .highlight-number {
+                font-size: 1.7rem;
+            }
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .gallery-item img {
+                height: 150px;
+            }
+            .back-to-top {
+                bottom: 16px;
+                right: 16px;
+                width: 38px;
+                height: 38px;
+            }
+        }
+        @media (max-width: 480px) {
+            .navbar-links a {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+            .hero-name {
+                font-size: 1.5rem;
+            }
+            .hero-badges {
+                gap: 5px;
+            }
+            .badge {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media print {
+            #particleCanvas {
+                display: none !important;
+            }
+            .navbar,
+            .back-to-top,
+            .hero-actions .btn,
+            .navbar-actions {
+                display: none !important;
+            }
+            .navbar {
+                position: static;
+                height: auto;
+                border-bottom: none;
+                box-shadow: none;
+            }
+            .navbar-inner {
+                padding: 0;
+            }
+            .navbar-brand {
+                font-size: 1.5rem;
+                -webkit-text-fill-color: #1e293b;
+                color: #1e293b;
+                background: none;
+            }
+            .main-container {
+                padding: 0;
+                max-width: 100%;
+            }
+            .hero {
+                padding: 16px 0 20px;
+                text-align: left;
+                align-items: flex-start;
+            }
+            .hero::before {
+                display: none;
+            }
+            .hero-avatar {
+                display: none;
+            }
+            .hero-name {
+                font-size: 1.8rem;
+                -webkit-text-fill-color: #1e293b;
+                color: #1e293b;
+                background: none;
+            }
+            .hero-title,
+            .hero-desc {
+                color: #475569;
+            }
+            .badge {
+                background: #f1f5f9;
+                color: #475569;
+                border-color: #cbd5e1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .badge.primary {
+                background: #4f46e5;
+                color: #fff;
+                border-color: #4f46e5;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .badge.accent {
+                background: #0d9488;
+                color: #fff;
+                border-color: #0d9488;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .section {
+                margin-top: 24px;
+                page-break-inside: avoid;
+            }
+            .highlight-card,
+            .cert-card,
+            .advantage-item,
+            .tabs-container,
+            .gallery-item {
+                box-shadow: none;
+                border: 1px solid #cbd5e1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .tab-panel {
+                display: block !important;
+                padding: 12px 0;
+            }
+            .tabs-nav {
+                display: none;
+            }
+            .footer {
+                margin-top: 24px;
+                border-top: 1px solid #cbd5e1;
+                color: #94a3b8;
+            }
+            body {
+                background: #fff;
+                color: #1e293b;
+            }
+            .skill-list li::before {
+                color: #4f46e5;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .cert-icon {
+                background: #eef2ff;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .cert-icon svg {
+                stroke: #4f46e5;
+            }
+            .timeline-item::before {
+                background: #4f46e5;
+                box-shadow: 0 0 0 3px #fff, 0 0 0 5px #cbd5e1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .highlight-number {
+                -webkit-text-fill-color: #4f46e5;
+                color: #4f46e5;
+                background: none;
+            }
+            .gallery-item img {
+                height: auto;
+                max-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <nav class="navbar" id="navbar" role="navigation" aria-label="主导航">
+        <div class="navbar-inner">
+            <a class="navbar-brand" href="#hero" aria-label="回到顶部">蔡亚轩</a>
+            <ul class="navbar-links" role="menubar" aria-label="页面导航">
+                <li role="none"><a href="#hero" role="menuitem" tabindex="0">摘要</a></li>
+                <li role="none"><a href="#highlights" role="menuitem" tabindex="-1">成果</a></li>
+                <li role="none"><a href="#skills" role="menuitem" tabindex="-1">技能</a></li>
+                <li role="none"><a href="#education" role="menuitem" tabindex="-1">教育</a></li>
+                <li role="none"><a href="#certificates" role="menuitem" tabindex="-1">证书</a></li>
+                <li role="none"><a href="#advantages" role="menuitem" tabindex="-1">优势</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <button class="icon-btn" id="themeToggle" aria-label="切换深浅色模式" title="切换深浅色模式">
+                    <svg id="themeIcon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="printBtn" aria-label="打印简历" title="打印 / 导出PDF">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部" title="返回顶部">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </button>
+
+    <main class="main-container" id="mainContent">
+        <section class="hero" id="hero" aria-label="个人简介">
+            <div class="hero-avatar" aria-hidden="true">蔡</div>
+            <h1 class="hero-name">蔡亚轩</h1>
+            <p class="hero-title">AI 训练师 · 智能体开发 · PPT 优化专员</p>
+            <p class="hero-desc" id="heroDesc">
+                准大一新生，区块链工程专业方向。精通 AI 工具与智能体工作流搭建，擅长用 AI 辅助 PPT 逻辑梳理与视觉优化。已考取多项 AI 专业认证，累计搭建智能体应用 10+ 个，优化 PPT 50+ 份。致力于将 AI 能力转化为实际效率提升。
+            </p>
+            <div class="hero-badges" id="heroBadges">
+                <span class="badge primary">🤖 AI 训练师</span>
+                <span class="badge accent">⚡ 智能体开发</span>
+                <span class="badge">📊 PPT 优化</span>
+                <span class="badge">🔗 区块链工程</span>
+                <span class="badge">🛠️ Coze / Dify</span>
+                <span class="badge">🎯 8 项 AI 认证</span>
+            </div>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="emailBtn" aria-label="复制邮箱地址">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span id="emailText">复制邮箱</span>
+                </button>
+                <button class="btn btn-outline" id="scrollToSkills" aria-label="查看技能详情">
+                    查看技能详情
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <section class="section" id="highlights" aria-label="亮点成果">
+            <div class="section-header">
+                <h2 class="section-title">亮点成果</h2>
+                <div class="section-line" aria-hidden="true"></div>
+                <span class="section-subtitle">可量化成绩</span>
+            </div>
+            <div class="highlights-grid" id="highlightsGrid"></div>
+        </section>
+
+        <section class="section" id="skills" aria-label="技能矩阵">
+            <div class="section-header">
+                <h2 class="section-title">专业技能</h2>
+                <div class="section-line" aria-hidden="true"></div>
+                <span class="section-subtitle">核心能力</span>
+            </div>
+            <div class="tabs-container" id="skillsTabs">
+                <div class="tabs-nav" role="tablist" aria-label="技能分类" id="skillsTabList">
+                    <button class="tab-btn" role="tab" id="tab-0" aria-selected="true" aria-controls="panel-0" tabindex="0" data-index="0">🤖 AI 工具</button>
+                    <button class="tab-btn" role="tab" id="tab-1" aria-selected="false" aria-controls="panel-1" tabindex="-1" data-index="1">⚡ 智能体工作流</button>
+                    <button class="tab-btn" role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1" data-index="2">📊 PPT 优化</button>
+                    <button class="tab-btn" role="tab" id="tab-3" aria-selected="false" aria-controls="panel-3" tabindex="-1" data-index="3">🔗 区块链基础</button>
+                    <button class="tab-btn" role="tab" id="tab-4" aria-selected="false" aria-controls="panel-4" tabindex="-1" data-index="4">🛠️ 办公协作</button>
+                </div>
+                <div id="skillsPanels"></div>
+            </div>
+        </section>
+
+        <section class="section" id="education" aria-label="教育背景">
+            <div class="section-header">
+                <h2 class="section-title">教育背景</h2>
+                <div class="section-line" aria-hidden="true"></div>
+                <span class="section-subtitle">学历信息</span>
+            </div>
+            <div class="tabs-container" style="padding: 24px;">
+                <div class="timeline" id="educationTimeline"></div>
+            </div>
+        </section>
+
+        <section class="section" id="certificates" aria-label="获奖与证书">
+            <div class="section-header">
+                <h2 class="section-title">获奖与证书</h2>
+                <div class="section-line" aria-hidden="true"></div>
+                <span class="section-subtitle">8 项 AI 专业认证</span>
+            </div>
+            <div class="cert-grid" id="certGrid"></div>
+            <div class="gallery-grid" id="certGallery"></div>
+        </section>
+
+        <section class="section" id="advantages" aria-label="个人优势">
+            <div class="section-header">
+                <h2 class="section-title">个人优势</h2>
+                <div class="section-line" aria-hidden="true"></div>
+                <span class="section-subtitle">核心竞争点</span>
+            </div>
+            <ul class="advantages-list" id="advantagesList"></ul>
+        </section>
+
+        <footer class="footer" id="footer">
+            <span>© 2026 蔡亚轩 · 个人简历</span>
+            <span>最后更新：2026 年 8 月 · 由 AI 辅助生成</span>
+        </footer>
+    </main>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const resume = {
+                name: '蔡亚轩',
+                title: 'AI 训练师 · 智能体开发 · PPT 优化专员',
+                major: '区块链工程（准大一新生）',
+                email: 'caiyaxuan' + '@' + 'example' + '.com',
+                heroDesc: '准大一新生，区块链工程专业方向。精通 AI 工具与智能体工作流搭建，擅长用 AI 辅助 PPT 逻辑梳理与视觉优化。已考取多项 AI 专业认证，累计搭建智能体应用 10+ 个，优化 PPT 50+ 份。致力于将 AI 能力转化为实际效率提升。',
+                badges: [
+                    '🤖 AI 训练师',
+                    '⚡ 智能体开发',
+                    '📊 PPT 优化',
+                    '🔗 区块链工程',
+                    '🛠️ Coze / Dify',
+                    '🎯 8 项 AI 认证'
+                ],
+                highlights: [
+                    { number: '10+', label: '智能体应用搭建', desc: '覆盖自动问答、周报生成、数据整理、内容审核等场景' },
+                    { number: '60%', label: '平均效率提升', desc: '通过智能体工作流自动化重复性任务，大幅减少人工介入' },
+                    { number: '50+', label: 'PPT 优化数量', desc: '涵盖课程汇报、商业路演、竞赛答辩等场景，评分平均提升 25%' },
+                    { number: '6×', label: 'PPT 优化效率提升', desc: '利用 AI 工具将单份优化时间从 2 小时压缩至 20 分钟' },
+                    { number: '80%', label: '人工介入率降低', desc: '通过多步骤自动化工作流设计，显著降低人工操作频次' },
+                    { number: '30%+', label: '输出准确率提升', desc: '精通 Prompt Engineering，针对不同场景优化提示词质量' }
+                ],
+                skills: [
+                    {
+                        label: '🤖 AI 工具',
+                        items: [
+                            '<strong>主流大语言模型：</strong>熟练使用 ChatGPT、Claude、文心一言、通义千问、Kimi 等，精通 <strong>Prompt Engineering</strong>，能够针对不同场景设计高质量提示词，输出准确率提升 <strong>30%+</strong>。',
+                            '<strong>AI 绘图工具：</strong>掌握 Midjourney、Stable Diffusion、文心一格，可快速生成宣传物料与演示素材。',
+                            '<strong>AI 视频工具：</strong>熟练使用剪映 AI、Runway，支持短视频自动化剪辑与特效生成。',
+                            '<strong>大模型微调：</strong>了解 LoRA、P-Tuning 等微调基础流程，具备数据清洗、标注、格式转换实战经验。'
+                        ]
+                    },
+                    {
+                        label: '⚡ 智能体工作流',
+                        items: [
+                            '<strong>精通 Coze（扣子）、Dify、n8n、Zapier</strong> 等智能体工作流平台，能够独立完成从需求分析、节点设计、调试到部署的全流程搭建。',
+                            '<strong>多步骤自动化工作流设计：</strong>擅长数据抓取 → 条件判断 → 工具调用（API、数据库、邮件）→ 内容生成 → 结果输出的全链路编排。',
+                            '<strong>实战经验丰富：</strong>累计搭建智能体应用 <strong>10+</strong> 个，覆盖自动问答、周报生成、数据整理、客户分类、内容审核等场景，平均效率提升 <strong>60%</strong>，人工介入率降低 <strong>80%</strong>。',
+                            '<strong>调试与异常处理：</strong>熟悉工作流日志分析，能够快速定位节点错误，确保流程稳定运行。'
+                        ]
+                    },
+                    {
+                        label: '📊 PPT 优化',
+                        items: [
+                            '<strong>PPT 逻辑辨析：</strong>具备优秀的 PPT 逻辑梳理、视觉设计与内容表达能力，能快速诊断页面问题（结构混乱、重点模糊、排版失衡、配色冲突等）。',
+                            '<strong>AI 辅助优化：</strong>擅长利用 <strong>Gamma、Beautiful.ai、ChatPPT、iSlide AI</strong> 等工具辅助重构内容与美化排版，将优化时间从 <strong>2 小时/份</strong> 压缩至 <strong>20 分钟/份</strong>，效率提升 <strong>6 倍</strong>。',
+                            '<strong>实战案例：</strong>累计优化 PPT <strong>50+</strong> 份，涵盖课程汇报、商业路演、竞赛答辩、活动总结等场景，演示评分平均提升 <strong>25%</strong>。',
+                            '<strong>信息可视化：</strong>熟悉信息可视化原则，能够将复杂数据转化为清晰图表，提升观众理解度与记忆点。'
+                        ]
+                    },
+                    {
+                        label: '🔗 区块链基础',
+                        items: [
+                            '<strong>区块链原理：</strong>了解区块链基本原理、共识机制（PoW、PoS），能够阅读并分析简单合约逻辑。',
+                            '<strong>智能合约开发：</strong>Solidity 入门水平，了解合约部署与调用流程。',
+                            '<strong>前沿方向关注：</strong>关注区块链与 AI 结合方向，对去中心化 AI、数据确权等前沿方向有基本认知与持续学习计划。'
+                        ]
+                    },
+                    {
+                        label: '🛠️ 办公协作',
+                        items: [
+                            '<strong>办公软件：</strong>精通 PowerPoint、Word、Excel 高级功能，能够高效完成文档处理与数据分析。',
+                            '<strong>设计工具：</strong>熟练使用剪映、Canva、Figma 进行设计与视频剪辑，可快速产出高质量视觉物料。',
+                            '<strong>版本管理：</strong>掌握 Git 基础操作，能够使用 GitHub 管理个人项目文档与协作。'
+                        ]
+                    }
+                ],
+                certificates: [
+                    { title: '百度智能云「AI 人工智能训练营」结业证书', detail: '数据标注、模型训练方向 · 2026 年' },
+                    { title: '阿里云人工智能训练师初级证书', detail: '2026 年' },
+                    { title: '阿里云人工智能训练师高级证书', detail: '2026 年' },
+                    { title: '腾讯云 AI 工程师认证（基础级）', detail: '2026 年' },
+                    { title: '华为 HCIA-AI 认证', detail: '2026 年' },
+                    { title: '科大讯飞 AI 开发工程师（初级）证书', detail: '2026 年' },
+                    { title: 'Coze 智能体开发实战结业证书', detail: '完成 10+ 工作流搭建 · 2026 年' },
+                    { title: 'Dify 工作流搭建认证（初级）', detail: '2026 年' }
+                ],
+                certificateImages: [
+                    { file: '证书1.jpg', caption: '阿里云人工智能训练师初级证书' },
+                    { file: '证书2.jpg', caption: '阿里云人工智能训练师高级证书' }
+                ],
+                advantages: [
+                    '具备扎实的 AI 工具实操能力与智能体工作流搭建经验，能够快速将重复性任务自动化，显著提升团队效率。',
+                    '对 PPT 内容逻辑与视觉呈现有敏锐判断，擅长用 AI 辅助优化，产出兼具专业性与美观度的演示材料。',
+                    '学习能力强，持续关注 AI 前沿动态，已自主考取多项 AI 相关认证，具备快速上手新工具的能力。',
+                    '跨领域思维：区块链工程专业背景结合 AI 应用技能，适合探索去中心化 AI、数据智能等新兴方向。'
+                ],
+                education: [
+                    { date: '2026.09 — 2030.06（预计）', title: '某高校 · 区块链工程', subtitle: '主修方向：区块链技术、智能合约、密码学、分布式系统、人工智能基础' },
+                    { date: '2026 年', title: '新生奖学金', subtitle: '待评定' }
+                ]
+            };
+
+            function renderHighlights() {
+                document.getElementById('highlightsGrid').innerHTML = resume.highlights.map(h => `
+                    <div class="highlight-card">
+                        <div class="highlight-number">${h.number}</div>
+                        <div class="highlight-label">${h.label}</div>
+                        <div class="highlight-desc">${h.desc}</div>
+                    </div>
+                `).join('');
+            }
+
+            function renderCertificates() {
+                const iconSVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>';
+                document.getElementById('certGrid').innerHTML = resume.certificates.map(c => `
+                    <div class="cert-card">
+                        <div class="cert-icon">${iconSVG}</div>
+                        <div class="cert-info">
+                            <h4>${c.title}</h4>
+                            <p>${c.detail}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function renderCertificateGallery() {
+                document.getElementById('certGallery').innerHTML = resume.certificateImages.map(img => `
+                    <div class="gallery-item" title="${img.caption}" tabindex="0" role="button" aria-label="${img.caption}">
+                        <img src="${img.file}" alt="${img.caption}" loading="lazy" 
+                             onerror="this.parentElement.style.display='none';">
+                        <div class="gallery-caption">${img.caption}</div>
+                    </div>
+                `).join('');
+            }
+
+            function renderAdvantages() {
+                document.getElementById('advantagesList').innerHTML = resume.advantages.map(a => `<li class="advantage-item">${a}</li>`).join('');
+            }
+
+            function renderEducation() {
+                document.getElementById('educationTimeline').innerHTML = resume.education.map(e => `
+                    <div class="timeline-item">
+                        <div class="timeline-date">${e.date}</div>
+                        <div class="timeline-title">${e.title}</div>
+                        <div class="timeline-subtitle">${e.subtitle}</div>
+                    </div>
+                `).join('');
+            }
+
+            function renderBadges() {
+                document.getElementById('heroBadges').innerHTML = resume.badges.map(b => {
+                    if (b.includes('AI 训练师')) return `<span class="badge primary">${b}</span>`;
+                    if (b.includes('智能体开发')) return `<span class="badge accent">${b}</span>`;
+                    return `<span class="badge">${b}</span>`;
+                }).join('');
+            }
+
+            function renderHeroDesc() {
+                document.getElementById('heroDesc').textContent = resume.heroDesc;
+            }
+
+            // ★★★ 新增：渲染专业技能面板 ★★★
+            function renderSkills() {
+                const container = document.getElementById('skillsPanels');
+                if (!container) return;
+                container.innerHTML = resume.skills.map((skill, index) => `
+                    <div class="tab-panel" role="tabpanel" id="panel-${index}" aria-labelledby="tab-${index}" aria-hidden="${index === 0 ? 'false' : 'true'}">
+                        <ul class="skill-list">
+                            ${skill.items.map(item => `<li><span>${item}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+            }
+
+            // 调用所有渲染函数
+            renderHighlights();
+            renderCertificates();
+            renderCertificateGallery();
+            renderAdvantages();
+            renderEducation();
+            renderBadges();
+            renderHeroDesc();
+            renderSkills();
+
+            // 主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+
+            function getStoredTheme() {
+                try { return localStorage.getItem('theme') || 'light'; } catch { return 'light'; }
+            }
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                try { localStorage.setItem('theme', theme); } catch {}
+                updateThemeIcon(theme);
+            }
+            function updateThemeIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                    themeToggle.setAttribute('aria-label', '切换到浅色模式');
+                } else {
+                    themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+                    themeToggle.setAttribute('aria-label', '切换到深色模式');
+                }
+            }
+            setTheme(getStoredTheme() === 'dark' ? 'dark' : 'light');
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                setTheme(current === 'dark' ? 'light' : 'dark');
+            });
+
+            // 打印
+            document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+            // 返回顶部
+            const backToTop = document.getElementById('backToTop');
+            const navbar = document.getElementById('navbar');
+            function handleScroll() {
+                if (window.scrollY > 300) backToTop.classList.add('visible');
+                else backToTop.classList.remove('visible');
+                if (window.scrollY > 20) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+            }
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+            backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // 平滑滚动
+            document.querySelectorAll('.navbar-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        const navHeight = navbar.offsetHeight;
+                        const targetPos = targetEl.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+                        window.scrollTo({ top: targetPos, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            document.getElementById('scrollToSkills').addEventListener('click', () => {
+                const skillsEl = document.getElementById('skills');
+                const navHeight = navbar.offsetHeight;
+                const targetPos = skillsEl.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+                window.scrollTo({ top: targetPos, behavior: 'smooth' });
+            });
+
+            // 邮箱复制
+            const emailBtn = document.getElementById('emailBtn');
+            const emailText = document.getElementById('emailText');
+            emailBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(resume.email);
+                    emailText.textContent = '已复制 ✓';
+                    setTimeout(() => emailText.textContent = '复制邮箱', 2000);
+                } catch {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = resume.email;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        emailText.textContent = '已复制 ✓';
+                        setTimeout(() => emailText.textContent = '复制邮箱', 2000);
+                    } catch {
+                        emailText.textContent = '复制失败';
+                        setTimeout(() => emailText.textContent = '复制邮箱', 2000);
+                    }
+                    document.body.removeChild(textArea);
+                }
+            });
+
+            // Tabs 初始化
+            const tabList = document.getElementById('skillsTabList');
+            const tabs = Array.from(tabList.querySelectorAll('.tab-btn'));
+            const panels = Array.from(document.querySelectorAll('.tab-panel'));
+
+            function activateTab(index) {
+                tabs.forEach((tab, i) => {
+                    const isActive = i === index;
+                    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    tab.tabIndex = isActive ? 0 : -1;
+                    panels[i].setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                });
+                tabs[index].focus();
+            }
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => activateTab(index));
+                tab.addEventListener('keydown', (e) => {
+                    let newIndex = null;
+                    switch (e.key) {
+                        case 'ArrowRight': e.preventDefault(); newIndex = (index + 1) % tabs.length; break;
+                        case 'ArrowLeft': e.preventDefault(); newIndex = (index - 1 + tabs.length) % tabs.length; break;
+                        case 'Home': e.preventDefault(); newIndex = 0; break;
+                        case 'End': e.preventDefault(); newIndex = tabs.length - 1; break;
+                        case 'Enter': case ' ': e.preventDefault(); activateTab(index); return;
+                        default: return;
+                    }
+                    if (newIndex !== null) activateTab(newIndex);
+                });
+            });
+            activateTab(0);
+
+            // 鼠标粒子特效
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId = null;
+            const colors = ['#4f46e5', '#7c3aed', '#0d9488', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6', '#8b5cf6'];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 4 + 2;
+                    this.speedX = (Math.random() - 0.5) * 6;
+                    this.speedY = (Math.random() - 0.5) * 6;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.life = 1;
+                    this.decay = Math.random() * 0.03 + 0.02;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.speedX *= 0.98;
+                    this.speedY *= 0.98;
+                    this.life -= this.decay;
+                    if (this.life < 0) this.life = 0;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.life;
+                    ctx.fillStyle = this.color;
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 8;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            function spawnParticles(e) {
+                const count = 12;
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle(e.clientX, e.clientY));
+                }
+                if (particles.length > 300) {
+                    particles = particles.slice(-300);
+                }
+                if (!animationId) {
+                    animationId = requestAnimationFrame(animate);
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles = particles.filter(p => p.life > 0);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                if (particles.length > 0) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    animationId = null;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            window.addEventListener('click', spawnParticles);
+            let lastMoveTime = 0;
+            window.addEventListener('mousemove', (e) => {
+                const now = Date.now();
+                if (now - lastMoveTime > 50) {
+                    lastMoveTime = now;
+                    const count = 1;
+                    for (let i = 0; i < count; i++) {
+                        particles.push(new Particle(e.clientX, e.clientY));
+                    }
+                    if (particles.length > 300) {
+                        particles = particles.slice(-300);
+                    }
+                    if (!animationId) {
+                        animationId = requestAnimationFrame(animate);
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
