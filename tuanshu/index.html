@@ -45,7 +45,7 @@
     line-height: 1.7; overflow-x: hidden; position: relative;
     transition: background-color var(--t), color var(--t);
   }
-  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  #stars { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 84px 22px 56px; position: relative; z-index: 1; }
 
   /* 导航 */
@@ -71,7 +71,7 @@
   .avatar { width: 92px; height: 92px; border-radius: 50%; background: var(--grad); color: #fff;
     display: flex; align-items: center; justify-content: center; font-size: 2.3rem; font-weight: 800;
     margin: 0 auto 18px; box-shadow: var(--sh-lg); user-select: none; }
-  .hero h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.02em;
+  .hero h1 { font-size: 1.9rem; font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -.02em;
     background: var(--grad); -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; color: transparent; line-height: 1.25; }
   .hero .post { font-size: clamp(1rem, 2.4vw, 1.25rem); font-weight: 700; color: var(--primary); margin-top: 6px; }
@@ -148,7 +148,7 @@
   .foot span { display: block; }
 
   /* 证书放大 */
-  .lb { position: fixed; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: center;
+  .lb { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 3000; display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 12px; background: rgba(6,10,20,.93); padding: 30px 18px; cursor: zoom-out; }
   .lb[hidden] { display: none; }
   .lb img { max-width: min(94vw,1000px); max-height: 80vh; object-fit: contain; background: #fff; border-radius: 6px; }
@@ -196,6 +196,7 @@
       <li><a href="#score">能力</a></li>
       <li><a href="#exp">经历</a></li>
       <li><a href="#honor">荣誉</a></li>
+      <li><a href="../">← 返回主页</a></li>
     </ul>
     <button class="icon-btn" id="themeBtn" title="切换深浅色" aria-label="切换深浅色">🌙</button>
   </div>
@@ -466,22 +467,27 @@
     (function loop(t) { draw(t); requestAnimationFrame(loop); })(0);
   } else { draw(0); }
 
-  /* 滚动出现 */
+  /* 滚动出现（含手机兜底：触屏/加载/超时都会显示） */
   var rvs = Array.prototype.slice.call(document.querySelectorAll('.rv'));
   function reveal() {
     var vh = window.innerHeight || document.documentElement.clientHeight;
     rvs.forEach(function (el) {
       if (el.classList.contains('in')) return;
       var r = el.getBoundingClientRect();
-      if (r.top < vh * .97 && r.bottom > 0) el.classList.add('in');
+      if (r.top < vh && r.bottom > -60) el.classList.add('in');
     });
   }
+  function revealAll() { rvs.forEach(function (el) { el.classList.add('in'); }); }
   rvs.forEach(function (el, i) { el.style.transitionDelay = Math.min((i % 6) * 60, 300) + 'ms'; });
-  window.addEventListener('scroll', reveal, { passive: true });
-  window.addEventListener('resize', reveal);
-  setInterval(reveal, 450);
+  ['scroll', 'resize', 'touchstart', 'touchmove', 'touchend', 'orientationchange'].forEach(function (ev) {
+    window.addEventListener(ev, reveal, { passive: true });
+  });
+  window.addEventListener('load', reveal);
+  setInterval(reveal, 400);
   reveal();
-  setTimeout(reveal, 400);
+  setTimeout(reveal, 300);
+  setTimeout(reveal, 1200);
+  setTimeout(revealAll, 3500);   // 兜底：3.5 秒后不再隐藏任何内容
 })();
 </script>
 </body>
