@@ -1495,6 +1495,23 @@
                 animation: none;
             }
         }
+        /* ---- 竞选团支书入口：高亮，避免被导航滚动隐藏 ---- */
+        .navbar-links a[href="tuanshu/"] {
+            color: #fff !important;
+            background: var(--gradient);
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+        }
+        .navbar-links a[href="tuanshu/"]:hover {
+            filter: brightness(1.08);
+            background: var(--gradient);
+        }
+        @media print {
+            .navbar-links a[href="tuanshu/"] {
+                background: none !important;
+                color: #4f46e5 !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1592,6 +1609,9 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </button>
+                <a class="btn btn-outline" href="tuanshu/" aria-label="查看我的竞选团支书简历">
+                    🏳️ 竞选团支书
+                </a>
             </div>
         </section>
 
@@ -2318,6 +2338,15 @@
                 }
                 window.addEventListener('scroll', revealCheck, { passive: true });
                 window.addEventListener('resize', revealCheck);
+                ['touchstart', 'touchmove', 'touchend'].forEach(function (ev) {
+                    window.addEventListener(ev, revealCheck, { passive: true });
+                });
+                setTimeout(function () {
+                    rvEls.forEach(function (el) {
+                        el.classList.add('in');
+                        if (el.id === 'skillBars') el.classList.add('go');
+                    });
+                }, 3500);                            // 手机兜底：绝不留下隐藏内容
                 setInterval(revealCheck, 400);      // 定时兜底：任何浏览器滚动都能触发
                 revealCheck();
                 setTimeout(revealCheck, 400);
