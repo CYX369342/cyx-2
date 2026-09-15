@@ -1123,9 +1123,13 @@
             opacity: 1;
             transform: none;
         }
+        /* 默认可见：动画只是增强。若手机不执行动画，内容依然正常显示 */
         .hero > * {
-            opacity: 0;
-            animation: heroUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            opacity: 1;
+            animation: heroUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+        }
+        @supports not (animation-name: none) {
+            .hero > * { opacity: 1 !important; }
         }
         .hero > *:nth-child(1) { animation-delay: 0.05s; }
         .hero > *:nth-child(2) { animation-delay: 0.15s; }
@@ -2169,14 +2173,15 @@
 
             function makeStars() {
                 stars = [];
-                const n = Math.round(Math.min(170, W * H / 12000));
+                const n = (window.innerWidth || 0) < 700 ? 45 : Math.round(Math.min(170, W * H / 12000));
                 for (let i = 0; i < n; i++) {
                     stars.push({ x: Math.random(), y: Math.random(), z: 0.35 + Math.random() * 0.65,
                                  s: Math.random() * 1.4 + 0.4, tw: Math.random() * Math.PI * 2, sp: 0.6 + Math.random() * 1.6 });
                 }
             }
             function resizeSpace() {
-                DPR = Math.min(2, window.devicePixelRatio || 1);
+                const small = (window.innerWidth || 0) < 700;
+                DPR = small ? 1 : Math.min(2, window.devicePixelRatio || 1);
                 W = window.innerWidth; H = window.innerHeight;
                 spaceCv.width = W * DPR; spaceCv.height = H * DPR;
                 makeStars();
@@ -2227,7 +2232,9 @@
                 const alpha = strong ? 1 : 0.62;
                 const pOx = (px - 0.5) * 40 + Math.min(lastScrollY * 0.04, 40);
                 const pOy = (py - 0.5) * 30;
+                const small = (window.innerWidth || 0) < 700; // 手机上省性能：只留星点
 
+                if (!small) {
                 // 两侧背景光斑
                 function blob(cx, cy, r, col, a) {
                     const g = sctx.createRadialGradient(cx, cy, 0, cx, cy, r);
@@ -2279,6 +2286,7 @@
                     sctx.beginPath(); sctx.ellipse(0, 0, R * 1.7, R * 0.5, 0, 0, Math.PI * 2); sctx.stroke();
                     sctx.restore();
                     sctx.globalAlpha = alpha;
+                }
                 }
 
                 // 点击 / 移动的星尘
